@@ -5,14 +5,18 @@ import java.util.Scanner;
 public class Exercicio21 {
     public static void main(String[] args) {
 
-        int cem = 0, cinquenta = 0, dez = 0, cinco = 0, um = 0;
-        int valor;
-        int saque;
-
-        Scanner scan = new Scanner(System.in);
         
-        System.out.println("Informe o valor a ser sacado: ");
-        valor = Integer.parseInt(scan.nextLine());
+
+        try (Scanner scan = new Scanner(System.in)) {
+            System.out.println("Informe o valor a ser sacado: ");
+            int valor = Integer.parseInt(scan.nextLine());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        int cem = 0, cinquenta = 0, dez = 0, cinco = 0, um = 0;
+        int valor = 0;
+        int saque;
         saque = valor;
 
         if (valor < 10) {
