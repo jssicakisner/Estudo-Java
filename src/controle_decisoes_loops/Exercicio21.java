@@ -4,51 +4,36 @@ import java.util.Scanner;
 
 public class Exercicio21 {
     public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
 
-        
+        int valorSaque;
+        int notas100, notas50, notas10, notas5, notas1;
 
-        try (Scanner scan = new Scanner(System.in)) {
-            System.out.println("Informe o valor a ser sacado: ");
-            int valor = Integer.parseInt(scan.nextLine());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        do {
+            System.out.print("Digite o valor do saque (entre 10 e 600): ");
+            valorSaque = scan.nextInt();
+        } while (valorSaque < 10 || valorSaque > 600);
 
-        int cem = 0, cinquenta = 0, dez = 0, cinco = 0, um = 0;
-        int valor = 0;
-        int saque;
-        saque = valor;
+        notas100 = valorSaque / 100;
+        valorSaque = valorSaque % 100;
 
-        if (valor < 10) {
-            System.out.println("O valor mínimo para saque é de R$10,00.");
-        } else if (valor > 600) {
-            System.out.println("O valor máximo para saque é de R$600,00.");
-        } else {
-            if (saque >= 100) {
-                cem = valor / 100;
-                saque = valor % 100;
-            }
-            if (saque >= 50) {
-                cinquenta = saque / 50;
-                saque = saque % 50;
-            }
-            if (saque >=10) {
-                dez = saque / 10;
-                saque = saque % 10;
-            }
-            if (saque >= 5) {
-                cinco = saque / 5;
-                saque = saque % 5;
-            }
-            if (saque >= 1) {
-                um = saque / 1;
-            }
-                System.out.println("Serao fornecidas: ");
-                System.out.printf("%d notas de 100\n", cem);
-                System.out.printf("%d notas de 50\n", cinquenta);
-                System.out.printf("%d notas de 10\n", dez);
-                System.out.printf("%d notas de 5\n", cinco);
-                System.out.printf("%d notas de 1\n", um);  
-        }
+        notas50 = valorSaque / 50;
+        valorSaque = valorSaque % 50;
+
+        notas10 = valorSaque / 10;
+        valorSaque = valorSaque % 10;
+
+        notas5 = valorSaque / 5;
+        valorSaque = valorSaque % 5;
+
+        notas1 = valorSaque;
+
+        System.out.println("Notas de 100: " + notas100);
+        System.out.println("Notas de 50: " + notas50);
+        System.out.println("Notas de 10: " + notas10);
+        System.out.println("Notas de 5: " + notas5);
+        System.out.println("Notas de 1: " + notas1);
+
+        scan.close();
     }
 }
