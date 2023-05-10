@@ -3,66 +3,120 @@ package matrizes;
 import java.util.Scanner;
 
 public class Exercicio06 {
+    private static final int BOARD_SIZE = 3;
+    private static final char EMPTY_CELL = '-';
+    private static final char PLAYER_X = 'X';
+    private static final char PLAYER_O = 'O';
 
-    private static final int TAMANHO_TABULEIRO = 3;
-    private static final char JOGADOR_1 = 'X';
-    private static final char JOGADOR_2 = 'O';
-    private static char[][] tabuleiro = new char[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+    private char[][] board;
+    private char currentPlayer;
 
-    // Define o jogador que começa a partida
-    private static char jogadorAtual = JOGADOR_1;
-
-    // Define se o jogo acabou ou não
-    private static boolean jogoAcabou = false;
-
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-
-        inicializarTabuleiro();
-        exibirTabuleiro();
-
-        while (!jogoAcabou) {
-            System.out.print("Jogador " + jogadorAtual + ", informe a linha da sua jogada (0 a 2): ");
-            int linha = scan.nextInt();
-            System.out.print("Jogador " + jogadorAtual + ", informe a coluna da sua jogada (0 a 2): ");
-            int coluna = scan.nextInt();
-
-            if (jogadaValida(linha, coluna)) {
-                tabuleiro[linha][coluna] = jogadorAtual;
-
-                exibirTabuleiro();
-
-                if (jogoAcabou()) {
-                    System.out.println("O jogador " + jogadorAtual + " venceu!");
-                    jogoAcabou = true;
-                } else if (tabuleiroCheio()) {
-                    System.out.println("O jogo empatou!");
-                    jogoAcabou = true;
-                } else {
-                    jogadorAtual = (jogadorAtual == JOGADOR_1) ? JOGADOR_2 : JOGADOR_1;
-                }
-            } else {
-                System.out.println("Jogada inválida, tente novamente!");
-            }
-        }
-        scan.close();        
+    public Exercicio06() {
+        board = new char[BOARD_SIZE][BOARD_SIZE];
+        currentPlayer = PLAYER_X;
+        initializeBoard();
     }
-    private static void inicializarTabuleiro() {
-        for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-            for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-                tabuleiro[i][j] = ' ';
+
+    private void initializeBoard() {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                board[row][col] = EMPTY_CELL;
             }
         }
     }
-    private static void exibirTabuleiro() {
+
+    private void printBoard() {
         System.out.println("-------------");
-        for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-                System.out.print(tabuleiro[i][j] + " | ");
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                System.out.print("| " + board[row][col] + " ");
             }
-            System.out.println();
+            System.out.println("|");
             System.out.println("-------------");
         }
+    }
+
+    private boolean isMoveValid(int row, int col) {
+        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+            return false;
+        }
+        return board[row][col] == EMPTY_CELL;
+    }
+
+    private void makeMove(int row, int col) {
+        board[row][col] = currentPlayer;
+    }
+
+    private boolean hasWon(char player) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][0] == player && board[i][1] == player && board[i][2] == player) {
+                return true; // Check rows
+            }
+            if (board[0][i] == player && board[1][i] == player && board[2][i] == player) {
+                return true; // Check columns
+            }
+        }
+        if (board[0][0] == player && board[1][1] == player && board[2][2] == player) {
+            return true; // Check diagonal
+        }
+        if (board[0][2] == player && board[1][1] == player && board[2][0] == player) {
+            return true; // Check reverse diagonal
+        }
+        return false;
+    }
+
+    private boolean isBoardFull() {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                if (board[row][col] == EMPTY_CELL) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == PLAYER_X) ? PLAYER_O : PLAYER_X;
+    }
+
+    public void play() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Tic-Tac-Toe");
+        System.out.println("Enter row and column numbers (0-" + (BOARD_SIZE - 1) + ") to make a move.");
+
+        while (true) {
+            System.out.println("\nCurrent board:");
+            printBoard();
+
+            int row, col;
+            do {
+                System.out.print("\nPlayer " + currentPlayer + ", enter your move: ");
+                row = scanner.nextInt();
+                col = scanner.nextInt();
+            } while (!isMoveValid(row, col));
+
+            makeMove(row, col);
+            if (hasWon(currentPlayer)) {
+                System.out.println("\nPlayer " + currentPlayer + " wins!");
+                printBoard();
+                break;
+            }
+
+            if (isBoardFull()) {
+                System.out.println("\nThe game is a tie!");
+                printBoard();
+                break;
+            }
+
+            switchPlayer();
+        }
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        Exercicio06 game = new Exercicio06();
+        game.play();
     }
 }
