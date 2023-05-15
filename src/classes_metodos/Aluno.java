@@ -14,6 +14,7 @@ public class Aluno {
         this.disciplinas = disciplinas;
         this.notas = new double[disciplinas.length];
     }
+
     public void setNota(int indice, double nota) {
         if (indice >= 0 && indice < disciplinas.length) {
             notas[indice] = nota;
@@ -21,6 +22,7 @@ public class Aluno {
             System.out.println("Índice inválido.");
         }
     }
+
     public boolean estaAprovado(int indiceDisciplina) {
         if (indiceDisciplina >= 0 && indiceDisciplina < disciplinas.length) {
             return notas[indiceDisciplina] >= 7.0;
@@ -29,6 +31,7 @@ public class Aluno {
             return false;
         }
     }
+
     public void exibirInfos() {
         System.out.println("Nome: " + nome);
         System.out.println("Matrícula: " + matricula);
