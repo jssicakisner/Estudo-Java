@@ -5,6 +5,14 @@ interface Figura {
     String getCor();
 }
 
+interface DimensaoSuperficial {
+    double calcularArea();
+}
+
+interface DimensaoVolumetrica {
+    double calcularVolume();
+}
+
 interface Figura2D extends Figura {
     double calcularArea();
 }
@@ -29,7 +37,7 @@ abstract class FiguraGeometrica implements Figura {
     }
 }
 
-class Circulo extends FiguraGeometrica implements Figura2D {
+class Circulo extends FiguraGeometrica implements Figura2D, DimensaoSuperficial {
     private double raio;
 
     public Circulo (String cor, double raio) {
@@ -41,7 +49,7 @@ class Circulo extends FiguraGeometrica implements Figura2D {
     }
 }
 
-class Quadrado extends FiguraGeometrica implements Figura2D {
+class Quadrado extends FiguraGeometrica implements Figura2D, DimensaoSuperficial {
     private double lado;
 
     public Quadrado (String cor, double lado) {
@@ -53,7 +61,7 @@ class Quadrado extends FiguraGeometrica implements Figura2D {
     }
 }
 
-class Triangulo extends FiguraGeometrica implements Figura2D {
+class Triangulo extends FiguraGeometrica implements Figura2D, DimensaoSuperficial {
     private double base;
     private double altura;
 
@@ -67,7 +75,7 @@ class Triangulo extends FiguraGeometrica implements Figura2D {
     }
 }
 
-class Cubo extends FiguraGeometrica implements Figura3D {
+class Cubo extends FiguraGeometrica implements Figura3D, DimensaoVolumetrica {
     private double aresta;
 
     public Cubo (String cor, double aresta) {
@@ -79,7 +87,7 @@ class Cubo extends FiguraGeometrica implements Figura3D {
     }
 }
 
-class Cilindro extends FiguraGeometrica implements Figura3D {
+class Cilindro extends FiguraGeometrica implements Figura3D, DimensaoVolumetrica {
     private double raio;
     private double altura;
 
@@ -91,9 +99,12 @@ class Cilindro extends FiguraGeometrica implements Figura3D {
     public double calcularVolume() {
         return (Math.PI * (raio * raio) * altura);
     }
+    public double calcularArea() {
+        return 2 * Math.PI * raio * (raio + altura);
+    }
 }
 
-class Piramide extends FiguraGeometrica implements Figura3D {
+class Piramide extends FiguraGeometrica implements Figura3D, DimensaoVolumetrica {
     private double base;
     private double altura;
 
@@ -104,5 +115,10 @@ class Piramide extends FiguraGeometrica implements Figura3D {
     }
     public double calcularVolume() {
         return (base * altura * altura) / 3;
+    }
+    public double calcularArea() {
+        double areaBase = base * base;
+        double areaLateral = base * Math.sqrt((base / 2) * (base / 2) + altura * altura) + base * Math.sqrt((base / 2) * (base / 2) + altura * altura);
+        return areaBase + areaLateral;
     }
 }
